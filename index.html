@@ -369,13 +369,13 @@ func i32 manhattan_distance Point* p1 Point* p2 {
     cjmp lt dx 0 neg_dx;
     jmp after_dx;
     label neg_dx:
-    abs_dx = neg dx;
+    bool abs_dx = neg dx;
     label after_dx:
 
     cjmp lt dy 0 neg_dy;
     jmp after_dy;
     label neg_dy:
-    abs_dy = neg dy;
+    bool abs_dy = neg dy;
     label after_dy:
 
     ret add abs_dx abs_dy;
