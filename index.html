@@ -412,7 +412,8 @@ entry main {
     i32* result_ptr = ref sum;
     store result_ptr sum;
 
-    ret;
+    // System call to exit with code 0 (Linux x86_64)
+    #syscall 60 0; 
 }</code></pre>
             </div>
 
@@ -447,7 +448,8 @@ entry main {
     // Memory barrier
     #fence;
 
-    ret;
+    // System call to exit with code 0 (Linux x86_64)
+    #syscall 60 0; 
 }</code></pre>
             </div>
         </section>
