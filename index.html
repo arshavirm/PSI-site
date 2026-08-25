@@ -8,7 +8,7 @@
 
     <title>PSI — Portable System Interface</title>
     <meta name="description"
-        content="PSI is a small, portable intermediate representation designed to describe programs across architectures.">
+        content="PSI is a small, C‑like, architecture‑aware language for systems programming with direct hardware access.">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
 
@@ -39,7 +39,6 @@
             margin-bottom: 100px;
         }
 
-
         nav a {
             margin-left: 24px;
             color: #555;
@@ -64,7 +63,26 @@
             max-width: 680px;
             font-size: 22px;
             color: #555;
-            margin-bottom: 70px;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff115b;
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 40px;
+        }
+
+        .cta-button:hover {
+            background: #d40a4a;
         }
 
         section {
@@ -90,8 +108,6 @@
             color: #222;
             font-size: 0.9em;
         }
-
-        /* Code block */
 
         .code-window {
             width: 100%;
@@ -152,10 +168,6 @@
                 Menlo, monospace;
             font-size: 14px;
             line-height: 1.8;
-        }
-
-        .hljs-meta {
-            color: #6b6b6b;
         }
 
         .feature-grid {
@@ -228,8 +240,9 @@
                 gap: 15px;
             }
 
-            .logo-text {
-                font-size: 22px;
+            .cta-button {
+                display: block;
+                text-align: center;
             }
         }
     </style>
@@ -239,8 +252,7 @@
     <main>
 
         <header>
-            <a href="#"><img src="./psi.svg" width="100px"></a>
-
+            <a href="#"><img src="./psi.svg" width="100px" alt="PSI logo"></a>
             <nav>
                 <a href="#about">About</a>
                 <a href="#design">Design</a>
@@ -250,29 +262,34 @@
         </header>
 
         <section>
-            <h1>A portable language for describing programs.</h1>
+            <h1>A small, C‑like, architecture‑aware language.</h1>
 
             <p class="lead">
-                PSI is a small intermediate representation designed to provide
-                a simple and portable foundation for compilers and systems
-                programming.
+                PSI (Portable System Interface) gives you direct access to hardware
+                registers and instructions without hand‑writing assembly for every
+                platform. Write once, compile to x86, x86‑64, ARM, and AArch64.
             </p>
+
+            <a href="https://github.com/arshavirm/PSI/blob/main/PSI-v0.1.md" class="cta-button">📄 Read Specs v0.1</a>
         </section>
 
         <section id="about">
             <h2>What is PSI?</h2>
 
             <p>
-                PSI is an intermediate representation that sits between a
-                programming language and machine code. It provides a common
-                way to describe programs while allowing compilers to target
-                different architectures.
+                PSI is a tiny, portable language designed for systems programming
+                where you need fine‑grained control over the machine. It provides
+                a familiar C‑like syntax while exposing architecture‑specific
+                features through <strong>special registers</strong> (<code>%rax</code>)
+                and <strong>special instructions</strong> (<code>#syscall</code>).
             </p>
 
             <p>
-                Instead of tying a language directly to a particular CPU,
-                PSI acts as a portable layer between the language and the
-                target machine.
+                The language has a small set of ordinary instructions
+                (<code>add</code>, <code>call</code>, <code>jmp</code>, …) that work
+                the same everywhere. For everything else, you use the target‑specific
+                <code>#</code> and <code>%</code> forms, visually marking where your
+                code becomes platform‑dependent.
             </p>
 
             <div class="code-window">
@@ -283,197 +300,91 @@
                     <span class="code-title">example.psi</span>
                 </div>
 
-                <pre><code class="language-psi">// A simple function that adds two numbers
+                <pre><code class="language-psi">// A simple function that adds two integers
 func i32 add i32 a i32 b {
     i32 result = add a b;
     ret result;
 }
 
-// Entry point of the program
+// Entry point – the symbol "main" is emitted exactly as declared
 entry main {
     i32 x = 10;
     i32 y = 20;
     i32 sum = call add x y;
 
-    // System call to write output (Linux x86_64)
+    // Write "Sum: " to stdout using Linux syscall (x86_64)
     i64 fd = 1;              // stdout
-    i64* msg = "Sum: ";
+    i8* msg = "Sum: ";
     i64 len = 5;
-    #syscall 1 fd msg len;
+    #syscall 1 fd msg len;   // write(fd, msg, len)
 
-    // System call to exit with code 0 (Linux x86_64)
-    #syscall 60 0; 
-
+    // Exit with code 0
+    #syscall 60 0;           // exit(0)
 }</code></pre>
             </div>
         </section>
 
         <section id="design">
-            <h2>Simple by design.</h2>
+            <h2>Designed for portability and control.</h2>
 
             <p>
-                PSI is designed to stay close to the machine without becoming
-                tied to one architecture. Its instructions describe the
-                operations a program needs while leaving architecture-specific
-                details to the compiler backend.
+                PSI stays close to the machine without being tied to one CPU.
+                The compiler (<code>psic</code>) handles target‑specific calling
+                conventions, register allocation, and instruction selection —
+                you just write logic in a clean, portable language.
             </p>
 
             <div class="feature-grid">
                 <div class="feature-item">
                     <h3>🎯 Portable</h3>
-                    <p>One representation that works across x86, x86-64, ARM, and AArch64.</p>
+                    <p>One language works across x86, x86‑64, ARM, and AArch64.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>⚡ Low-level</h3>
-                    <p>Direct access to registers, memory, and system calls when needed.</p>
+                    <h3>⚡ Low‑level</h3>
+                    <p>Read/write physical registers, issue system calls, and use memory barriers directly.</p>
                 </div>
                 <div class="feature-item">
                     <h3>🔧 Extensible</h3>
-                    <p>Special instructions and registers for architecture-specific features.</p>
+                    <p>Special instructions (<code>#</code>) give you access to hardware features like
+                        <code>rdtsc</code>, <code>popcnt</code>, and FPU ops.
+                    </p>
                 </div>
                 <div class="feature-item">
                     <h3>📦 Simple</h3>
-                    <p>Small instruction set with clear semantics and no hidden complexity.</p>
+                    <p>A minimal set of types (integers, floats, pointers, structs) and a handful of ordinary
+                        instructions — no hidden magic.</p>
                 </div>
             </div>
         </section>
 
         <section id="examples">
-            <h2>PSI in action.</h2>
+            <h2>More examples</h2>
 
             <p>
-                Here are some examples showing PSI's features, from basic arithmetic
-                to structs, arrays, and inline assembly.
+                The <a href="https://github.com/arshavirm/PSI">GitHub repository</a>
+                contains the full specification and a growing set of real‑world
+                examples, including:
             </p>
-
-            <div class="code-window">
-                <div class="code-header">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="code-title">struct.psi</span>
-                </div>
-
-                <pre><code class="language-psi">// Define a struct with alignment
-struct Point : 8 {
-    i32 x;
-    i32 y;
-};
-
-// Function that works with structs
-func i32 manhattan_distance Point* p1 Point* p2 {
-    i32 dx = sub p1.x p2.x;
-    i32 dy = sub p1.y p2.y;
-    i32 abs_dx = dx;
-    i32 abs_dy = dy;
-
-    // Absolute value using conditional logic
-    cjmp lt dx 0 neg_dx;
-    jmp after_dx;
-    label neg_dx;
-    bool abs_dx = neg dx;
-    label after_dx;
-
-    cjmp lt dy 0 neg_dy;
-    jmp after_dy;
-    label neg_dy;
-    bool abs_dy = neg dy;
-    label after_dy;
-
-    ret add abs_dx abs_dy;
-}</code></pre>
-            </div>
-
-            <div class="code-window">
-                <div class="code-header">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="code-title">array.psi</span>
-                </div>
-
-                <pre><code class="language-psi">// Arrays and pointers
-entry main {
-    i32* numbers = [10, 20, 30, 40, 50];
-
-    i32 sum = 0;
-    i32 i = 0;
-
-    label loop;
-    cjmp ge i 5 done;
-    i32* ptr = ref numbers[i];
-    i32 val = load ptr;
-    sum = add sum val;
-    i = add i 1;
-    jmp loop;
-
-    label done;
-    // Store the result
-    i32* result_ptr = ref sum;
-    store result_ptr sum;
-
-    // System call to exit with code 0 (Linux x86_64)
-    #syscall 60 0; 
-}</code></pre>
-            </div>
-
-            <div class="code-window">
-                <div class="code-header">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="code-title">special.psi</span>
-                </div>
-
-                <pre><code class="language-psi">// Special registers and instructions
-entry main {
-    // Read the current cycle counter (x86 only)
-    i64 cycles = #rdtsc;
-
-    // Use x86_64 specific registers directly
-    %rax = 42;
-    %rbx = 100;
-    i64 result = add %rax %rbx;
-
-    // Floating point operations
-    f32 a = 3.14;
-    f32 b = 2.71;
-    f32 c = #fadd a b;
-
-    // Atomic operations
-    i32 counter = 0;
-    i32* counter_ptr = ref counter;
-    i32 old = #atomic_add counter_ptr 1;
-
-    // Memory barrier
-    #fence;
-
-    // System call to exit with code 0 (Linux x86_64)
-    #syscall 60 0; 
-}</code></pre>
-            </div>
-        </section>
-
-        <section>
-            <h2>Get started.</h2>
+            <ul>
+                <li>Fibonacci and factorial functions</li>
+                <li>Simple string manipulation</li>
+                <li>Direct memory access with pointer arithmetic</li>
+                <li>Using <code>#fence</code> for synchronization</li>
+                <li>Counting leading/trailing zero bits with <code>#clz</code> and <code>#ctz</code></li>
+            </ul>
             <p>
-                PSI is open source and available on GitHub. Check out the
-                repository for documentation, examples, and the reference
-                implementation.
-            </p>
-            <p style="margin-top: 16px;">
-                <a href="https://github.com/" style="color: #ff115b; text-decoration: none; font-weight: 500;">
-                    → View on GitHub
-                </a>
+                The compiler <code>psic</code> is built on LLVM, but the specification
+                is backend‑agnostic — any conforming implementation must produce the
+                same observable behavior.
             </p>
         </section>
 
         <footer>
-            <span>PSI — Portable System Interface</span>
+            <span>PSI — Portable System Interface v0.1.0</span>
             <span>
                 <a href="#about">About</a> ·
                 <a href="#design">Design</a> ·
-                <a href="https://github.com/">GitHub</a>
+                <a href="https://github.com/arshavirm/PSI">GitHub</a>
             </span>
         </footer>
 
@@ -484,30 +395,28 @@ entry main {
     <script>
         hljs.registerLanguage("psi", function () {
 
+            // Ordinary instructions as per spec §5
             const INSTRUCTIONS = [
                 'add', 'sub', 'mul', 'div', 'mod',
-                'eq', 'gt', 'lt', 'neq', 'gte', 'lte',
-                'and', 'or', 'not', 'xor',
+                'eq', 'neq', 'gt', 'lt', 'gte', 'lte',
+                'and', 'or', 'xor', 'not',
                 'lsh', 'rsh',
                 'land', 'lor', 'lnot',
                 'ref',
                 'jmp', 'cjmp', 'call', 'ret', 'label'
             ];
 
+            // Special instructions as per spec §6.2
             const SPECIAL_INSTRUCTIONS = [
                 'syscall',
                 'clz', 'ctz', 'popcnt', 'bswap',
-                'fence', 'memory_barrier',
+                'fence',
                 'trap', 'pause', 'yield',
                 'rdtsc',
-                'fadd', 'fsub', 'fmul', 'fdiv',
-                'cas', 'atomic_add', 'atomic_xchg',
-                'rotl', 'rotr',
-                'rdpc', 'rip', 'rdsp', 'rdfp',
-                'gettid', 'gettid_arm',
-                'cmpxchg'
-            ];;
+                'fadd', 'fsub', 'fmul', 'fdiv'
+            ];
 
+            // All named registers from spec §6.1
             const X86_64_REGS = [
                 'rax', 'rbx', 'rcx', 'rdx', 'rsi', 'rdi', 'rbp', 'rsp',
                 'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15',
@@ -569,7 +478,7 @@ entry main {
                         'u8', 'u16', 'u32', 'u64',
                         'f32', 'f64'
                     ],
-                    built_in: INSTRUCTIONS,
+                    built_in: INSTRUCTIONS.concat(SPECIAL_INSTRUCTIONS.map(s => '#' + s)),
                     literal: ['true', 'false', 'null', 'nullptr']
                 },
                 contains: [
@@ -584,32 +493,33 @@ entry main {
                         ]
                     }),
 
+                    // Special register: %name
                     {
                         className: 'variable',
                         begin: /%[a-zA-Z_][a-zA-Z0-9_]*/,
                         relevance: 10
                     },
 
+                    // Special instruction: #name
                     {
                         className: 'keyword',
                         begin: /#[a-zA-Z_][a-zA-Z0-9_]*/,
                         relevance: 10
                     },
 
+                    // Strings
                     {
                         className: 'string',
                         begin: /"/,
                         end: /"/,
                         contains: [
                             hljs.BACKSLASH_ESCAPE,
-                            {
-                                className: 'subst',
-                                begin: /\\x[0-9a-fA-F]{2}/
-                            }
+                            { className: 'subst', begin: /\\x[0-9a-fA-F]{2}/ }
                         ],
                         relevance: 10
                     },
 
+                    // Numbers
                     {
                         className: 'number',
                         relevance: 0,
@@ -620,24 +530,21 @@ entry main {
                         ]
                     },
 
+                    // Primitive types
                     {
                         className: 'type',
                         begin: /\b(void|bool|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64)\b/,
                         relevance: 5
                     },
 
+                    // Struct names (capitalized)
                     {
                         className: 'type',
                         begin: /\b[A-Z][a-zA-Z0-9_]*\b/,
                         relevance: 0
                     },
 
-                    {
-                        className: 'operator',
-                        begin: /\*/,
-                        relevance: 5
-                    },
-
+                    // Alignment suffix :N
                     {
                         className: 'meta',
                         begin: /:\s*\d+/,
@@ -645,34 +552,25 @@ entry main {
                         contains: [{ begin: /:/ }]
                     },
 
-                    {
-                        className: 'keyword',
-                        begin: /\b(entry|struct|func|const|true|false|null|nullptr)\b/,
-                        relevance: 10
-                    },
-
+                    // Built-in instructions
                     {
                         className: 'built_in',
                         begin: new RegExp('\\b(' + INSTRUCTIONS.join('|') + ')\\b'),
                         relevance: 5
                     },
 
+                    // Punctuation
                     {
                         className: 'punctuation',
                         begin: /[{}[\].:;=,()]/,
                         relevance: 0
                     },
 
+                    // Catch-all identifiers (lowest priority)
                     {
                         className: 'variable',
                         begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
                         relevance: 0
-                    },
-
-                    {
-                        className: 'operator',
-                        begin: /=/,
-                        relevance: 5
                     }
                 ]
             };
