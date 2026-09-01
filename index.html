@@ -5,12 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="psi.svg" type="image/x-icon">
-
     <title>PSI — Portable System Interface</title>
     <meta name="description"
-        content="PSI is a small, C‑like, architecture‑aware language for systems programming with direct hardware access.">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+        content="PSI is a compact, portable language for dependable systems software and direct hardware control.">
 
     <style>
         * {
@@ -19,10 +16,9 @@
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                Roboto, Helvetica, Arial, sans-serif;
-            color: #222;
+            color: #202124;
             background: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
         }
 
@@ -42,57 +38,38 @@
         nav a {
             margin-left: 24px;
             color: #555;
-            text-decoration: none;
             font-size: 15px;
-            transition: color 0.2s;
+            text-decoration: none;
+            transition: color .2s;
         }
 
-        nav a:hover {
-            color: #ff115b;
+        nav a:hover,
+        footer a:hover {
+            color: #d40a4a;
+        }
+
+        section {
+            max-width: 680px;
+            margin-bottom: 64px;
         }
 
         h1 {
-            max-width: 720px;
+            max-width: 740px;
             margin: 0 0 25px;
             font-size: clamp(42px, 7vw, 72px);
             line-height: 1.05;
             letter-spacing: -2px;
         }
 
-        .lead {
-            max-width: 680px;
-            font-size: 22px;
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #ff115b;
-            color: #fff;
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-bottom: 40px;
-        }
-
-        .cta-button:hover {
-            background: #d40a4a;
-        }
-
-        section {
-            max-width: 680px;
-            margin-bottom: 60px;
-        }
-
         h2 {
-            font-size: 26px;
             margin-bottom: 15px;
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
         }
 
         p {
@@ -100,74 +77,29 @@
             font-size: 17px;
         }
 
-        code {
-            padding: 2px 6px;
-            background: #f3f3f3;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #222;
-            font-size: 0.9em;
+        .lead {
+            max-width: 680px;
+            margin-bottom: 30px;
+            color: #555;
+            font-size: 22px;
         }
 
-        .code-window {
-            width: 100%;
-            margin: 35px 0;
-            overflow: hidden;
-            border: 1px solid #e5e5e5;
-            border-radius: 10px;
-            background: #f8f8f8;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        .cta-button {
+            display: inline-block;
+            margin-bottom: 40px;
+            padding: 12px 30px;
+            border-radius: 40px;
+            color: #fff;
+            background: #ff115b;
+            font-size: 17px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background .2s, transform .2s;
         }
 
-        .code-header {
-            display: flex;
-            align-items: center;
-            height: 38px;
-            padding: 0 14px;
-            border-bottom: 1px solid #e5e5e5;
-            background: #f3f3f3;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            margin-right: 6px;
-            border-radius: 50%;
-            background: #ccc;
-        }
-
-        .dot:nth-child(1) {
-            background: #ff5f56;
-        }
-
-        .dot:nth-child(2) {
-            background: #ffbd2e;
-        }
-
-        .dot:nth-child(3) {
-            background: #27c93f;
-        }
-
-        .code-title {
-            margin-left: 8px;
-            color: #888;
-            font-family: monospace;
-            font-size: 12px;
-        }
-
-        pre {
-            margin: 0;
-            padding: 24px;
-            overflow-x: auto;
-        }
-
-        pre code.hljs {
-            padding: 0;
-            background: transparent;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono",
-                Menlo, monospace;
-            font-size: 14px;
-            line-height: 1.8;
+        .cta-button:hover {
+            background: #d40a4a;
+            transform: translateY(-1px);
         }
 
         .feature-grid {
@@ -182,35 +114,36 @@
             border-top: 2px solid #f0f0f0;
         }
 
-        .feature-item h3 {
-            margin: 0 0 8px;
-            font-size: 18px;
-        }
-
         .feature-item p {
             margin: 0;
-            font-size: 15px;
             color: #666;
+            font-size: 15px;
+        }
+
+        ul {
+            padding-left: 22px;
+            color: #555;
+            font-size: 17px;
+        }
+
+        li {
+            margin: 8px 0;
         }
 
         footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-top: 100px;
             padding-top: 25px;
             border-top: 1px solid #eee;
             color: #888;
             font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         footer a {
             color: #888;
             text-decoration: none;
-        }
-
-        footer a:hover {
-            color: #ff115b;
         }
 
         @media (max-width: 600px) {
@@ -219,20 +152,26 @@
             }
 
             header {
+                align-items: flex-start;
                 margin-bottom: 70px;
             }
 
+            header img {
+                width: 82px;
+            }
+
+            nav {
+                text-align: right;
+            }
+
             nav a {
-                margin-left: 12px;
+                display: inline-block;
+                margin: 0 0 8px 12px;
                 font-size: 13px;
             }
 
             .lead {
                 font-size: 19px;
-            }
-
-            pre code.hljs {
-                font-size: 13px;
             }
 
             .feature-grid {
@@ -244,138 +183,104 @@
                 display: block;
                 text-align: center;
             }
+
+            footer {
+                display: block;
+            }
+
+            footer span {
+                display: block;
+                margin-bottom: 12px;
+            }
         }
     </style>
 </head>
 
 <body>
     <main>
-
         <header>
-            <a href="#"><img src="./psi.svg" width="100px" alt="PSI logo"></a>
+            <a href="#"><img src="./psi.svg" width="100" alt="PSI logo"></a>
             <nav>
                 <a href="#about">About</a>
                 <a href="#design">Design</a>
-                <a href="#examples">Examples</a>
+                <a href="#applications">Applications</a>
                 <a href="https://github.com/arshavirm/PSI">GitHub</a>
             </nav>
         </header>
 
         <section>
-            <h1>A small, C‑like, architecture‑aware language.</h1>
-
+            <h1>Systems programming with clarity, control, and portability.</h1>
             <p class="lead">
-                PSI (Portable System Interface) gives you direct access to hardware
-                registers and instructions without hand‑writing assembly for every
-                platform. Write once, compile to x86, x86‑64, ARM, and AArch64.
+                PSI (Portable System Interface) is a compact language for building
+                dependable software close to the machine. It brings direct hardware
+                access and a familiar development model to multiple processor families.
             </p>
-
-            <a href="https://github.com/arshavirm/PSI/blob/main/PSI-v0.1.md" class="cta-button">📄 Read Specs v0.1</a>
+            <a href="https://github.com/arshavirm/PSI/blob/main/PSI-v0.2.md" class="cta-button">Read the
+                specification</a>
         </section>
 
         <section id="about">
-            <h2>What is PSI?</h2>
-
+            <h2>A focused foundation for systems software</h2>
             <p>
-                PSI is a tiny, portable language designed for systems programming
-                where you need fine‑grained control over the machine. It provides
-                a familiar C‑like syntax while exposing architecture‑specific
-                features through <strong>special registers</strong> (<code>%rax</code>)
-                and <strong>special instructions</strong> (<code>#syscall</code>).
+                PSI is designed for engineers who need predictable performance and
+                precise control over memory, hardware, and execution. Its compact
+                surface keeps the essential parts of systems work visible without
+                adding unnecessary ceremony.
             </p>
-
             <p>
-                The language has a small set of ordinary instructions
-                (<code>add</code>, <code>call</code>, <code>jmp</code>, …) that work
-                the same everywhere. For everything else, you use the target‑specific
-                <code>#</code> and <code>%</code> forms, visually marking where your
-                code becomes platform‑dependent.
+                A portable core provides consistent behavior across supported
+                architectures, while clearly defined platform interfaces make
+                specialized capabilities available when they matter. The result is
+                software that is easier to reason about, review, and maintain.
             </p>
-
-            <div class="code-window">
-                <div class="code-header">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="code-title">example.psi</span>
-                </div>
-
-                <pre><code class="language-psi">// A simple function that adds two integers
-func i32 add i32 a i32 b {
-    i32 result = add a b;
-    ret result;
-}
-
-// Entry point – the symbol "main" is emitted exactly as declared
-entry main {
-    i32 x = 10;
-    i32 y = 20;
-    i32 sum = call add x y;
-
-    // Write "Sum: " to stdout using Linux syscall (x86_64)
-    i64 fd = 1;              // stdout
-    i8* msg = "Sum: ";
-    i64 len = 5;
-    #syscall 1 fd msg len;   // write(fd, msg, len)
-
-    // Exit with code 0
-    #syscall 60 0;           // exit(0)
-}</code></pre>
-            </div>
         </section>
 
         <section id="design">
-            <h2>Designed for portability and control.</h2>
-
+            <h2>Designed for portability and control</h2>
             <p>
-                PSI stays close to the machine without being tied to one CPU.
-                The compiler (<code>psic</code>) handles target‑specific calling
-                conventions, register allocation, and instruction selection —
-                you just write logic in a clean, portable language.
+                PSI stays close to the machine without being tied to one processor.
+                Its toolchain handles the details that vary by target, so teams can
+                focus on sound designs and reliable behavior instead of duplicated
+                platform work.
             </p>
-
             <div class="feature-grid">
                 <div class="feature-item">
-                    <h3>🎯 Portable</h3>
-                    <p>One language works across x86, x86‑64, ARM, and AArch64.</p>
+                    <h3>Portable by design</h3>
+                    <p>Build for x86, x86-64, ARM, and AArch64 from one consistent foundation.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>⚡ Low‑level</h3>
-                    <p>Read/write physical registers, issue system calls, and use memory barriers directly.</p>
+                    <h3>Direct and predictable</h3>
+                    <p>Work with memory, registers, system services, and synchronization primitives with confidence.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>🔧 Extensible</h3>
-                    <p>Special instructions (<code>#</code>) give you access to hardware features like
-                        <code>rdtsc</code>, <code>popcnt</code>, and FPU ops.
+                    <h3>Ready to extend</h3>
+                    <p>Use a clearly scoped architecture interface when performance or hardware features demand it.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Small and understandable</h3>
+                    <p>A focused type system and minimal runtime keep behavior visible and maintenance straightforward.
                     </p>
-                </div>
-                <div class="feature-item">
-                    <h3>📦 Simple</h3>
-                    <p>A minimal set of types (integers, floats, pointers, structs) and a handful of ordinary
-                        instructions — no hidden magic.</p>
                 </div>
             </div>
         </section>
 
-        <section id="examples">
-            <h2>More examples</h2>
-
+        <section id="applications">
+            <h2>Built for practical systems work</h2>
             <p>
-                The <a href="https://github.com/arshavirm/PSI">GitHub repository</a>
-                contains the full specification and a growing set of real‑world
-                examples, including:
+                PSI is a strong fit for projects where efficiency, control, and
+                portability are equally important. Explore the
+                <a href="https://github.com/arshavirm/PSI">project repository</a>
+                for the full specification, implementation notes, and ongoing work.
             </p>
             <ul>
-                <li>Fibonacci and factorial functions</li>
-                <li>Simple string manipulation</li>
-                <li>Direct memory access with pointer arithmetic</li>
-                <li>Using <code>#fence</code> for synchronization</li>
-                <li>Counting leading/trailing zero bits with <code>#clz</code> and <code>#ctz</code></li>
+                <li>Embedded and firmware foundations</li>
+                <li>Operating-system and runtime components</li>
+                <li>Performance-sensitive libraries and services</li>
+                <li>Portable tools that need dependable low-level behavior</li>
             </ul>
             <p>
-                The compiler <code>psic</code> is built on LLVM, but the specification
-                is backend‑agnostic — any conforming implementation must produce the
-                same observable behavior.
+                The specification is implementation-independent, giving teams room
+                to evolve the toolchain while preserving the language's observable behavior.
             </p>
         </section>
 
@@ -387,198 +292,7 @@ entry main {
                 <a href="https://github.com/arshavirm/PSI">GitHub</a>
             </span>
         </footer>
-
     </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-
-    <script>
-        hljs.registerLanguage("psi", function () {
-
-            // Ordinary instructions as per spec §5
-            const INSTRUCTIONS = [
-                'add', 'sub', 'mul', 'div', 'mod',
-                'eq', 'neq', 'gt', 'lt', 'gte', 'lte',
-                'and', 'or', 'xor', 'not',
-                'lsh', 'rsh',
-                'land', 'lor', 'lnot',
-                'ref',
-                'jmp', 'cjmp', 'call', 'ret', 'label'
-            ];
-
-            // Special instructions as per spec §6.2
-            const SPECIAL_INSTRUCTIONS = [
-                'syscall',
-                'clz', 'ctz', 'popcnt', 'bswap',
-                'fence',
-                'trap', 'pause', 'yield',
-                'rdtsc',
-                'fadd', 'fsub', 'fmul', 'fdiv'
-            ];
-
-            // All named registers from spec §6.1
-            const X86_64_REGS = [
-                'rax', 'rbx', 'rcx', 'rdx', 'rsi', 'rdi', 'rbp', 'rsp',
-                'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15',
-                'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp', 'esp',
-                'r8d', 'r9d', 'r10d', 'r11d', 'r12d', 'r13d', 'r14d', 'r15d',
-                'ax', 'bx', 'cx', 'dx', 'si', 'di', 'bp', 'sp',
-                'r8w', 'r9w', 'r10w', 'r11w', 'r12w', 'r13w', 'r14w', 'r15w',
-                'al', 'bl', 'cl', 'dl', 'sil', 'dil', 'bpl', 'spl',
-                'r8b', 'r9b', 'r10b', 'r11b', 'r12b', 'r13b', 'r14b', 'r15b'
-            ];
-
-            const X86_REGS = [
-                'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp', 'esp',
-                'ax', 'bx', 'cx', 'dx', 'si', 'di', 'bp', 'sp',
-                'al', 'bl', 'cl', 'dl'
-            ];
-
-            const AARCH64_REGS = [];
-            for (let i = 0; i < 31; i++) {
-                AARCH64_REGS.push('x' + i);
-                AARCH64_REGS.push('w' + i);
-            }
-            for (let i = 0; i < 32; i++) {
-                AARCH64_REGS.push('s' + i);
-                AARCH64_REGS.push('d' + i);
-            }
-            AARCH64_REGS.push('sp', 'fp', 'lr');
-
-            const ARM32_REGS = [];
-            for (let i = 0; i < 13; i++) {
-                ARM32_REGS.push('r' + i);
-            }
-            for (let i = 0; i < 32; i++) {
-                ARM32_REGS.push('s' + i);
-            }
-            for (let i = 0; i < 16; i++) {
-                ARM32_REGS.push('d' + i);
-            }
-            ARM32_REGS.push('sp', 'lr', 'fp');
-
-            const XMM_REGS = [];
-            for (let i = 0; i < 16; i++) {
-                XMM_REGS.push('xmm' + i);
-            }
-
-            const ALL_REGS = [...X86_64_REGS, ...X86_REGS, ...AARCH64_REGS, ...ARM32_REGS, ...XMM_REGS];
-            const UNIQUE_REGS = [...new Set(ALL_REGS)];
-
-            return {
-                name: 'PSI',
-                aliases: ['psi'],
-                keywords: {
-                    keyword: [
-                        'entry', 'struct', 'func', 'const',
-                        'true', 'false', 'null', 'nullptr'
-                    ],
-                    type: [
-                        'void', 'bool', 'i8', 'i16', 'i32', 'i64',
-                        'u8', 'u16', 'u32', 'u64',
-                        'f32', 'f64'
-                    ],
-                    built_in: INSTRUCTIONS.concat(SPECIAL_INSTRUCTIONS.map(s => '#' + s)),
-                    literal: ['true', 'false', 'null', 'nullptr']
-                },
-                contains: [
-                    hljs.COMMENT('//', '$', {
-                        contains: [{ begin: /\\\n/, relevance: 0 }]
-                    }),
-
-                    hljs.COMMENT('/\\*', '\\*/', {
-                        contains: [
-                            { begin: /\\\n/, relevance: 0 },
-                            hljs.C_BLOCK_COMMENT_MODE
-                        ]
-                    }),
-
-                    // Special register: %name
-                    {
-                        className: 'variable',
-                        begin: /%[a-zA-Z_][a-zA-Z0-9_]*/,
-                        relevance: 10
-                    },
-
-                    // Special instruction: #name
-                    {
-                        className: 'keyword',
-                        begin: /#[a-zA-Z_][a-zA-Z0-9_]*/,
-                        relevance: 10
-                    },
-
-                    // Strings
-                    {
-                        className: 'string',
-                        begin: /"/,
-                        end: /"/,
-                        contains: [
-                            hljs.BACKSLASH_ESCAPE,
-                            { className: 'subst', begin: /\\x[0-9a-fA-F]{2}/ }
-                        ],
-                        relevance: 10
-                    },
-
-                    // Numbers
-                    {
-                        className: 'number',
-                        relevance: 0,
-                        variants: [
-                            { begin: /\b-?0x[0-9a-fA-F]+\b/, relevance: 10 },
-                            { begin: /\b-?\d+\.\d+\b/, relevance: 10 },
-                            { begin: /\b-?\d+\b/, relevance: 0 }
-                        ]
-                    },
-
-                    // Primitive types
-                    {
-                        className: 'type',
-                        begin: /\b(void|bool|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64)\b/,
-                        relevance: 5
-                    },
-
-                    // Struct names (capitalized)
-                    {
-                        className: 'type',
-                        begin: /\b[A-Z][a-zA-Z0-9_]*\b/,
-                        relevance: 0
-                    },
-
-                    // Alignment suffix :N
-                    {
-                        className: 'meta',
-                        begin: /:\s*\d+/,
-                        relevance: 5,
-                        contains: [{ begin: /:/ }]
-                    },
-
-                    // Built-in instructions
-                    {
-                        className: 'built_in',
-                        begin: new RegExp('\\b(' + INSTRUCTIONS.join('|') + ')\\b'),
-                        relevance: 5
-                    },
-
-                    // Punctuation
-                    {
-                        className: 'punctuation',
-                        begin: /[{}[\].:;=,()]/,
-                        relevance: 0
-                    },
-
-                    // Catch-all identifiers (lowest priority)
-                    {
-                        className: 'variable',
-                        begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
-                        relevance: 0
-                    }
-                ]
-            };
-        });
-
-        hljs.highlightAll();
-    </script>
-
 </body>
 
 </html>
